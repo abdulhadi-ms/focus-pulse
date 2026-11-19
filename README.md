@@ -7,7 +7,7 @@
 ![Tests](https://img.shields.io/badge/tests-node%3Atest-339933?logo=node.js&logoColor=fff)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-## Why FocusPulse?
+## Why use FocusPulse?
 
 Most productivity timers require sign-ups, subscriptions, bloated frameworks, or stream heavy audio files. **FocusPulse** runs 100% locally in your browser with **zero npm dependencies**, synthesizes ambient focus audio on the fly with the **Web Audio API**, and keeps all your focus logs private in `localStorage` with one-click CSV/JSON export.
 
