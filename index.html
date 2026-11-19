@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FocusPulse — Deep-Work Timer &amp; Analytics</title>
+    <meta
+      name="description"
+      content="Zero-dependency, offline-first Pomodoro timer, task tracker, procedural Web Audio soundscapes, and deep-work analytics."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <h1>FocusPulse</h1>
+          <span class="badge">Offline-First</span>
+        </div>
+        <div class="topbar-actions">
+          <button id="settingsBtn" class="btn btn-ghost" type="button" aria-label="Open timer settings">
+            Settings
+          </button>
+          <button id="themeBtn" class="btn btn-ghost" type="button" aria-label="Toggle color theme">
+            Light Mode
+          </button>
+        </div>
+      </header>
+
+      <main class="grid-layout">
+        <!-- Timer & Soundscape Panel -->
+        <section class="card timer-card" aria-label="Focus Timer">
+          <div class="mode-tabs" role="tablist" aria-label="Timer modes">
+            <button class="mode-tab active" data-mode="focus" role="tab" aria-selected="true">
+              Focus
+            </button>
+            <button class="mode-tab" data-mode="shortBreak" role="tab" aria-selected="false">
+              Short Break
+            </button>
+            <button class="mode-tab" data-mode="longBreak" role="tab" aria-selected="false">
+              Long Break
+            </button>
+          </div>
+
+          <div class="ring-wrapper">
+            <svg class="progress-ring" viewBox="0 0 240 240" aria-hidden="true">
+              <circle class="ring-track" cx="120" cy="120" r="106" />
+              <circle id="progressCircle" class="ring-fill" cx="120" cy="120" r="106" />
+            </svg>
+            <div class="timer-readout">
+              <span id="modeLabel" class="mode-label">Deep Focus</span>
+              <div id="timeDisplay" class="time-display" aria-live="polite">25:00</div>
+              <span id="cycleDisplay" class="cycle-label">Cycle 1 of 4</span>
+            </div>
+          </div>
+
+          <div id="activeTaskBanner" class="active-task-banner">
+            <span class="muted">Working on:</span>
+            <strong id="activeTaskTitle">No task selected</strong>
+          </div>
+
+          <div class="timer-controls">
+            <button id="startPauseBtn" class="btn btn-primary btn-lg" type="button">
+              Start Focus
+            </button>
+            <button id="resetBtn" class="btn btn-secondary" type="button" title="Reset timer (R)">
+              Reset
+            </button>
+            <button id="skipBtn" class="btn btn-secondary" type="button" title="Skip to next phase (N)">
+              Skip
+            </button>
+          </div>
+
+          <p class="shortcuts-hint">
+            Shortcuts: <kbd>Space</kbd> Start/Pause · <kbd>R</kbd> Reset · <kbd>N</kbd> Skip
+          </p>
+
+          <div class="sound-panel">
+            <div class="sound-header">
+              <h2>Ambient Soundscape</h2>
+              <span class="muted small">Procedural Web Audio</span>
+            </div>
+            <div class="sound-pills" role="group" aria-label="Ambient sound presets">
+              <button class="pill active" data-sound="off" type="button">Off</button>
+              <button class="pill" data-sound="brown" type="button">Brown Noise</button>
+              <button class="pill" data-sound="rain" type="button">Soft Rain</button>
+              <button class="pill" data-sound="hum" type="button">Focus Hum</button>
+            </div>
+            <label class="volume-row" for="volumeSlider">
+              <span class="small muted">Volume</span>
+              <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="0.35" />
+            </label>
+          </div>
+        </section>
+
+        <!-- Right Column: Tasks + Analytics -->
+        <div class="side-column">
+          <section class="card tasks-card" aria-label="Task Queue">
+            <div class="card-header">
+              <h2>Task Queue</h2>
+              <span id="taskCounter" class="muted small">0 tasks</span>
+            </div>
+
+            <form id="taskForm" class="task-form">
+              <input
+                id="taskInput"
+                type="text"
+                placeholder="What are you focusing on?"
+                maxlength="120"
+                required
+                aria-label="New task title"
+              />
+              <input
+                id="taskEstimate"
+                type="number"
+                min="1"
+                max="12"
+                value="2"
+                title="Estimated pomodoros"
+                aria-label="Estimated pomodoros"
+              />
+              <button class="btn btn-primary" type="submit">Add</button>
+            </form>
+
+            <ul id="taskList" class="task-list" aria-label="Tasks"></ul>
+          </section>
+
+          <section class="card analytics-card" aria-label="Deep-Work Analytics">
+            <div class="card-header">
+              <h2>Deep-Work Analytics</h2>
+              <div class="export-actions">
+                <button id="exportCsvBtn" class="btn btn-ghost btn-sm" type="button">CSV</button>
+                <button id="exportJsonBtn" class="btn btn-ghost btn-sm" type="button">JSON</button>
+              </div>
+            </div>
+
+            <div class="kpi-grid">
+              <div class="kpi-box">
+                <span class="kpi-value" id="kpiTodayMins">0m</span>
+                <span class="kpi-label">Today</span>
+              </div>
+              <div class="kpi-box">
+                <span class="kpi-value" id="kpiStreak">0d</span>
+                <span class="kpi-label">Streak</span>
+              </div>
+              <div class="kpi-box">
+                <span class="kpi-value" id="kpiTotalSessions">0</span>
+                <span class="kpi-label">Sessions</span>
+              </div>
+            </div>
+
+            <div class="chart-section">
+              <div class="chart-header">
+                <span class="small muted">Last 7 Days (Focus Minutes)</span>
+              </div>
+              <div id="weeklyChart" class="bar-chart" aria-label="7-day focus minutes bar chart"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Settings Dialog -->
+    <dialog id="settingsDialog" class="settings-dialog" aria-labelledby="settingsTitle">
+      <form id="settingsForm" method="dialog" class="settings-form">
+        <div class="dialog-header">
+          <h2 id="settingsTitle">Timer Settings</h2>
+          <button id="closeSettingsBtn" class="btn btn-ghost btn-sm" type="button" aria-label="Close">
+            ✕
+          </button>
+        </div>
+
+        <label class="field">
+          <span>Focus duration (minutes)</span>
+          <input id="focusMinutesInput" type="number" min="1" max="120" required />
+        </label>
+
+        <label class="field">
+          <span>Short break (minutes)</span>
+          <input id="shortBreakMinutesInput" type="number" min="1" max="60" required />
+        </label>
+
+        <label class="field">
+          <span>Long break (minutes)</span>
+          <input id="longBreakMinutesInput" type="number" min="1" max="90" required />
+        </label>
+
+        <label class="field">
+          <span>Focus cycles before long break</span>
+          <input id="cyclesInput" type="number" min="2" max="8" required />
+        </label>
+
+        <div class="dialog-actions">
+          <button id="resetDefaultsBtn" class="btn btn-ghost" type="button">Reset Defaults</button>
+          <button class="btn btn-primary" type="submit">Save Changes</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

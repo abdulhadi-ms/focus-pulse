@@ -1,0 +1,22 @@
+{
+  "name": "focus-pulse",
+  "version": "1.0.0",
+  "description": "A zero-dependency, offline-first Pomodoro timer, task tracker, procedural ambient soundscape generator, and deep-work analytics dashboard.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "pomodoro",
+    "productivity",
+    "focus",
+    "timer",
+    "analytics",
+    "web-audio",
+    "zero-dependency",
+    "vanilla-js"
+  ],
+  "author": "abdulhadi-ms",
+  "license": "MIT"
+}
