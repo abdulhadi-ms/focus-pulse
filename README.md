@@ -46,7 +46,7 @@ Because FocusPulse is pure HTML, CSS, and ES Modules with no build step, you can
 2. Set **Source** to `Deploy from a branch` (`main` / `/ (root)`).
 3. Save — your live app will be available at `https://abdulhadi-ms.github.io/focus-pulse/`.
 
-## Keyboard Shortcuts
+## Keyboard Shortcuts Button
 
 | Key | Action |
 | --- | --- |
